@@ -1,26 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import axios from 'axios';
 import './App.css';
+import {BrowserRouter as Router, Switch, Route} from  'react-router-dom';
+import FullImage from './FullImage';
+import Home from './Home';
+
 
 function App() {
+  const [imagesFetched, setImagesFetched] = useState([])
+  const [userInputText, setuserInputText] = useState('')
+  const [imageToDisplay, setimageToDisplay] = useState([])
+
+  const searchHandler = (event) => {
+    console.log(userInputText)
+    event.preventDefault()
+    axios.get(`https://api.unsplash.com/search/photos?&query=${userInputText}&per_page=9&client_id=VQV7CMB6GN1Gtm5saelkFDUoXngsOQDg7-wTis7ggI8`)
+          .then((response) => {
+            console.log('Unsplash API call response: ', response.data.results)
+            setImagesFetched(response.data.results)
+            setimageToDisplay(response.data.results)
+          })
+          .catch((error) => console.log(error))
+  }
+
+  const userInputHandler = (event) => {
+    console.log('userTextInput update: ', event)
+    setuserInputText(event.target.value)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+    <div className='userInputStyle'>
+    <form onSubmit={searchHandler}>
+      <input type='text' placeholder='Search Image Here ...' onChange={userInputHandler} />
+    </form>
+    </div>
+    <Router>
+    {imagesFetched && imagesFetched.length > 0 && imageToDisplay && imageToDisplay.length>0 &&
+      <Home imagesFetched={imagesFetched} />
+    }
+        <div className='imageCardStyle'>
+        <Switch><Route path='/' exact component={Home} />
+          <Route path='/fullimage' exact component={FullImage} />
+          <Route path='/fullimage/:id' component={FullImage} />
+          </Switch>
+        </div>
+      </Router>
     </div>
   );
 }
+
 
 export default App;
