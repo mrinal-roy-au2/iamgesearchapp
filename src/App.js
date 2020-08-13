@@ -15,7 +15,7 @@ function App() {
   const searchHandler = (event) => {
     console.log(userInputText)
     event.preventDefault()
-    axios.get(`https://api.unsplash.com/search/photos?&query=${userInputText}&per_page=9&client_id=${API_KEY}`)
+    axios.get(`https://api.unsplash.com/search/photos?&query=${userInputText}&h=600&per_page=9&client_id=${API_KEY}`)
           .then((response) => {
             console.log('Unsplash API call response: ', response.data.results)
             setImagesFetched(response.data.results)
