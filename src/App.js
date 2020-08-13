@@ -4,6 +4,7 @@ import './App.css';
 import {BrowserRouter as Router, Switch, Route} from  'react-router-dom';
 import FullImage from './FullImage';
 import Home from './Home';
+const API_KEY = process.env.REACT_APP_API_KEY
 
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
   const searchHandler = (event) => {
     console.log(userInputText)
     event.preventDefault()
-    axios.get(`https://api.unsplash.com/search/photos?&query=${userInputText}&per_page=9&client_id=VQV7CMB6GN1Gtm5saelkFDUoXngsOQDg7-wTis7ggI8`)
+    axios.get(`https://api.unsplash.com/search/photos?&query=${userInputText}&per_page=9&client_id=${API_KEY}`)
           .then((response) => {
             console.log('Unsplash API call response: ', response.data.results)
             setImagesFetched(response.data.results)
