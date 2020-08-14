@@ -15,7 +15,7 @@ function App() {
   const searchHandler = (event) => {
     console.log(userInputText)
     event.preventDefault()
-    axios.get(`https://api.unsplash.com/search/photos?&query=${userInputText}&h=600&per_page=9&client_id=${API_KEY}`)
+    axios.get(`https://api.unsplash.com/search/photos?&query=${userInputText}&h=600&client_id=${API_KEY}`)
           .then((response) => {
             console.log('Unsplash API call response: ', response.data.results)
             setImagesFetched(response.data.results)
@@ -42,7 +42,7 @@ function App() {
     }
         <div className='imageCardStyle'>
         <Switch><Route path='/' exact component={Home} />
-          <Route path='/fullimage' exact component={FullImage} />
+          {/* <Route path='/fullimage' exact component={FullImage} /> */}
           <Route path='/fullimage/:id' component={FullImage} />
           </Switch>
         </div>
